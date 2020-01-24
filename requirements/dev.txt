@@ -1,0 +1,6 @@
+# This file contain only
+# development related dependencies
+# on production environment this file
+# can be neglected.
+
+django-extensions==2.2.6

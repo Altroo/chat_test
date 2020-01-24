@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+<div class="container">
+  <div class="page-header">
+    <h1>Welcome to Altroo chat
+    <small>Pick a user and start chating </small>
+    </h1>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <div id="user-list" class="list-group">
+        <a href="" class="list-group-item disabled">
+          <h4 class="list-group-item-heading">Users</h4>
+          <!-- user go here -->
+        </a>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h4 class="panel-title">Chat</h4>
+        </div>
+        <div>
+          <ul id="messages" class="messages">
+            {# Messages go here #}
+          </ul>
+        </div>
+        <div class="panel-footer">
+          <div class="input-group">
+	    <input type="file" accept='image/*' id="attachment_input" style="display:none;"/> 
+	    <span class="input-group-btn">
+                <button class="btn btn-info btn"
+                        id="attachment_button">
+                Attach</button>
+              </span>
+            <input id="chat-input" type="text"
+                   class="form-control input"
+                   placeholder="Type your message here ..."
+                   maxlength="500" onclick="markLatestMessageSeen(event)">
+              <span class="input-group-btn">
+                <button class="btn btn-info btn"
+                        id="btn-send">
+                Send</button>
+              </span>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div  class="col-md-3" hidden id="currentInputImageCol">
+     <label> Preview </label>
+    <img alt="latest attached image preview" id="currentInputImage" style="width:100%"/>
+  </div>
+  </div>
+  </div>
+  <script>
+    let sessionKey = '{{ request.session.session_key }}';
+    let currentUser = '{{ request.user.id }}';
+  </script>
+  <script src="{% static 'js/app.js' %}"></script>
+  {% endblock %}
