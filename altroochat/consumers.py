@@ -14,9 +14,8 @@ class AltrooChatConsumer(AsyncWebsocketConsumer):
     unentrupted communication.
     """
     async def connect(self):
-        user_id = self.scope["session"]["_auth_user_id"]
-        self.group_name = "%s" % (user_id)
-
+        user = self.scope["user"]
+        self.group_name = "%s" % (user.id)
         print("group name is %s and channel_name is %s" % (self.group_name, self.channel_name))
         
         # Join room group
@@ -25,7 +24,7 @@ class AltrooChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
         await self.accept()
-        await self.create_or_update_status(user_id, online=True)
+        await self.create_or_update_status(user.id, online=True)
 
 
     async def disconnect(self, close_code):
@@ -82,7 +81,6 @@ class AltrooChatConsumer(AsyncWebsocketConsumer):
             else:
                 status.online = online
                 status.save()
-                
         except Status.DoesNotExist:
             Status.objects.create(user=User.objects.get(id=user_id),
                             online=online)

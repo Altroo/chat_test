@@ -1,9 +1,28 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from altroochat.models import MessageModel, Status
 from rest_framework.serializers import (ModelSerializer,
                                         CharField, SerializerMethodField,
                                         CreateOnlyDefault,  CurrentUserDefault)
+from rest_framework.authtoken.models import Token
+
+
+class AltrooChatLoginSerializer(ModelSerializer):
+    token = SerializerMethodField()
+
+    def get_token(self, instance):
+        try:
+            return instance.auth_token.key
+        except Token.DoesNotExist:
+            token = Token.objects.create(user=instance)
+            return token.key
+            
+
+    class Meta:
+        model = User
+        exclude = ('password', )
 
 
 class MessageModelSerializer(ModelSerializer):
