@@ -1,4 +1,4 @@
-# Altroo Chat
+# Altroo Chat Section: 1
 Final release of the Altroo chat with module build functionality, This document include following 
   - How to build the current code into a python module, which can be used in any django project.
   - complete functionality of the django channels chat
@@ -57,9 +57,10 @@ CHANNEL_LAYERS = {
     },
 }
 ```
+
 # What is ASGI_APPLICATION mentioned above?
->ASGI_APPLICATION is Async Webserver Gateway Interface just like WSGI, In order to work with Django Channels we need to user this
->see bellow settings up ASGI application file.
+>ASGI_APPLICATION is Async Webserver Gateway Interface just like WSGI, In order to work with Django Channels we need to use this for websocket connections
+>see bellow how we setup ASGI application file named routing.py.
 
 ```python
 #! -*- coding: utf-8 -*-                                                                                                              
@@ -81,6 +82,10 @@ application = ProtocolTypeRouter({
  - User just need to copy paste above given code, Inside a new file name routing.py, in the root sub-application. see altroo_demo for more calrity of the concep.
  - this is the file which is mentioned in ASGI_APPLICATION settings mentioned above
 
+# After this run migrations as mentioned below to make the models changes of altroochat appear in your database schema
+```sh
+$ python manage.py migrate
+```
 
 # How to use the URLS provided by AltrooChat Module?
 > Users are allowed to user the URL patterns of the altroochat directly using Include statement in url_patterns or he/she can call the ModelViewset sirectly from his/her routers or url_patterns, if the user is not including the url_patterns of altroochat directly anywhere.
@@ -89,3 +94,63 @@ application = ProtocolTypeRouter({
 # what if I include the url_patterns of the altroochat directly, what should be the API and websocket path?
 - API path will be at path   http://<your_host_name>/altroochat/api/v1/
 - websocket will at path ws://<your_host_name>/altroochatws/
+
+
+
+
+# Section: 2
+
+![Django logo](https://miro.medium.com/max/1200/1*kZYhspq8RetYYmzZeB2t-g.png)
+![Postgres logo](https://miro.medium.com/max/2100/1*7AOhGDnRL2eyJMUidCHZEA.jpeg)
+![Redis logo](https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQGD4SJekj1R1rnbaH1hgirvZoUyRCYtAE_s7kKoPxiVcVLNltS)
+
+#### OUR ASSUMPTIONS : ####
+> We are already assuming that you have virtualenv installed on your machine.
+> Your machine is running Python verison 3.8.0
+> You have a running instance of postgresql version 10 and it is independent of implementation you can use any version of your choice.
+> you have redis server running on your local host or on a remote server and the redis based settings is updated in settings/base.py file
+#### INSTALLATION: ####
+
+```
+$ cd ~/
+$ virtualenv -p python3.8.0 --no-site-packages env_altroo_chat
+$ cd env_altroo_chat
+$ git clone git@github.com:nareshkumarjaggiexiver/altroochat.git
+$ cd altroochat
+$ source ../bin/activate
+$ pip install -r requirements.txt
+```
+
+#### Updating database settings for up & running ####
+
+> To update the database settings you need to update the settings/dev.py  file
+> In setttings/dev.py file rename the database name settings to your database name
+
+#### Creating a postgres database for you locally  ####
+
+> we are assuming you have a postrgesql database  instance running on your system
+```
+$ psql -U postgres
+# Above command will open postgres shell, run following commands to create a datbase
+> create database <database_name>;  # make sure this database_name is same as in settings/dev.py
+>\q
+```
+#### Running Django DB migrations on postgres database ####
+```
+./manage.py makemigrations
+$ python manage.py migrate
+```
+#### CREATING INITIAL USER ACCOUNT WITH ALL ACCESS ####
+```
+$ python manage.py createsuperuser
+```
+>  fill the desire data as prompted, and a superuser will be created
+
+
+#### Running the django dev server ####
+```
+$ python manage.py runserver [host]:[port]
+```
+
+> open your browser, call for http://localhost:8000
+> and login using the created superadmin credentials
