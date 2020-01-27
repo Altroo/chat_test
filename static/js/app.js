@@ -112,6 +112,7 @@ function sendMessage(recipient, body) {
     data.append("body", body)
     
     $.ajax({url:'altroochat/api/v1/message/',
+	    headers: {'Authorization': "Token " + localStorage.getItem('token')},
 	    method: "post",
 	    data:data,
 	    contentType: false,
@@ -173,6 +174,7 @@ function markLatestMessageSeen(event){
 	    let messageId = lastMessageLiElement.attr('id').split('_')[1];
 	    $.ajax({url: `altroochat/api/v1/message/${messageId}/`,
 		    method: "patch",
+		    headers: {'Authorization': "Token " + localStorage.getItem('token')},
 		    data: JSON.stringify({'viewed': true}),
 		    contentType: "application/json; charset:utf-8",
 		    success: function(data){
@@ -286,7 +288,15 @@ function fillCurrentInputImage(input) {
     }
 }
 
+function getUserInformation(){
+    // method used to get the token information
+    // of the user
 
+        $.getJSON(`altroochat/api/v1/message-login/`, function (data) {
+	    localStorage.setItem('token', data.token)
+	    connectWebSocket();
+    });
+}
 $("#attachment_input").change(function(){
     // trigger fired when ever attached inpute field
     // is filled with som image. ie: user try to attach an image
@@ -302,7 +312,8 @@ $(document).ready(function () {
     });
     updateUserList();
     disableInput();
-    connectWebSocket();
+    getUserInformation();
+    //connectWebSocket();
     chatInput.keypress(function (e) {
         if (e.keyCode == 13)
             chatButton.click();

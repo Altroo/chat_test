@@ -20,7 +20,7 @@ class MessageLoginModelViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = AltrooChatLoginSerializer
     allowed_methods = ('OPTION', 'HEAD', 'POST', 'GET')
-    permission_classes = (AllowAny, )
+    permission_classes = [AllowAny, ]
 
     def list(self, request, *args, **kwargs):
         """
