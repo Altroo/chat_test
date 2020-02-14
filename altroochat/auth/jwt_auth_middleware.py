@@ -23,7 +23,8 @@ class SimpleJwtTokenAuthMiddleware:
         self.inner = inner
         
     def __call__(self, scope):
-        # Close old database connections to prevent usage of timed out connections
+        # Close old database connections to prevent
+        # usage of timed out connections
         close_old_connections()
         
         # Get the token
