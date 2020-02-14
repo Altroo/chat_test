@@ -78,8 +78,8 @@ application = ProtocolTypeRouter({
 })
 ```
  - AuthMiddleWareStack is used for session based authentication. 
-- As the scope of application is not just limited to web, we also have a Token based authentication Middleware, which is Custom written inside altroochat.auth.middleware you can also use that instesd of AuthMiddleWarStack.
- - User just need to copy paste above given code, Inside a new file name routing.py, in the root sub-application. see altroo_demo for more calrity of the concep.
+- As the scope of application is not just limited to web, we also have a Token based authentication Middleware, which is Custom written inside altroochat.auth.middleware and altroochat.auth.jwt_auth_middleware.py you can also use that instesd of AuthMiddleWarStack.
+ - User just need to copy paste above given code, Inside a new file name routing.py, in the root sub-application. see altroo_demo for more calrity of the concept.
  - this is the file which is mentioned in ASGI_APPLICATION settings mentioned above
 
 # After this run migrations as mentioned below to make the models changes of altroochat appear in your database schema
